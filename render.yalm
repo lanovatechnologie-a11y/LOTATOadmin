@@ -1,0 +1,24 @@
+services:
+  # Service web principal
+  - type: web
+    name: nova-lotto
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nova-lotto-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+    
+  # Base de données PostgreSQL
+  - type: postgres
+    name: nova-lotto-db
+    databaseName: nova_lotto
+    user: nova_user
+    plan: free
+    ipAllowList: []
